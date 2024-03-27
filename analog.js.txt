@@ -1,0 +1,53 @@
+import React, { Component } from 'react';
+import './AnalogClock.css';
+
+export default class AnalogClock extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time: new Date()
+    };
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(() => {
+      this.setState({
+        time: new Date(),
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
+  render() {
+    const hourRotation = (this.state.time.getHours() % 12) * 30 + this.state.time.getMinutes() / 2;
+    const minuteRotation = this.state.time.getMinutes() * 6 + this.state.time.getSeconds() / 10;
+    const secondRotation = this.state.time.getSeconds() * 6;
+
+    return (
+      <div className='analog-clock'>
+        <div
+          className='hour-hand'
+          style={{
+            transform: `rotate(${hourRotation}deg)`
+          }}
+        />
+        <div
+          className='minute-hand'
+          style={{
+            transform: `rotate(${minuteRotation}deg)`
+          }}
+        />
+        <div
+          className='second-hand'
+          style={{
+            transform: `rotate(${secondRotation}deg)`
+          }}
+        />
+        <div className='clock-center' />
+      </div>
+    );
+  }
+}
